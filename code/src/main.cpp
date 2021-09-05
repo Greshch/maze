@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
 	srand(time(0));
-	system("mode con cols=210 lines=70");
+	system("mode con cols=120 lines=45");
 	system("title Super Maze!");
 
 	// hide standard console cursor
@@ -17,8 +17,8 @@ int main()
 	cci.dwSize = 100;
 	SetConsoleCursorInfo(h, &cci);
 
-	const int width = 200;
-	const int height = 60;
+	const int width = 100;
+	const int height = 40;
 	int maze[height][width];
 
 	// http://www.quizful.net/post/enum-types-c
