@@ -37,18 +37,24 @@ int main()
 		if (direct == 224)
 			direct = _getch();
 
+		//quit
 		if (direct == 'q')
 			break;
 
-		SetConsoleCursorPosition(h, pers);
-		cout << " ";
+		// SetConsoleCursorPosition(h, pers);
+		// cout << " ";
+		ErasePersonsOldPosition(h, pers);
 
-		if (direct == RIGHT && maze[pers.Y][pers.X + 1] != WALL)
-		{
-			pers.X++;
-		}
+		UpdatePerson((int*)maze, width, direct, pers);
 		
 		DrawObject(h, pers, BLUE, 1);
+		DrawPersonPosition(h, pers, {width + 2, 2});
+
+		if (IsEqualCoord(pers, EXIT))
+		{
+			MessageBoxW(NULL, L"Победа найден выход!", L"Победа", MB_OK);
+			break;
+		}
 	}
 
 	CloseApp(h);
