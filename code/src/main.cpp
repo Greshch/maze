@@ -29,9 +29,10 @@ int main()
 	DrawMaze(h, (int*)maze, height, width);
 
 	COORD pers = { 0, 2 };
-	SetConsoleCursorPosition(h, pers);
-	SetConsoleTextAttribute(h, BLUE);
-	cout << (char)1;
+	// SetConsoleCursorPosition(h, pers);
+	// SetConsoleTextAttribute(h, BLUE);
+	// cout << (char)1;
+	DrawObject(h, pers, BLUE, 1);
 
 	while (true)
 	{
