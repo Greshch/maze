@@ -70,3 +70,15 @@ void DrawObject(HANDLE& h, COORD const& obj, colors color, int  what)
 	SetConsoleTextAttribute(h, color);
 	std::cout << (char)what;
 }
+
+void CloseApp(HANDLE& handle)
+{
+	system("cls");
+	SetConsoleCursorPosition(handle, {0, 0});
+	SetConsoleTextAttribute(handle, WHITE);
+	//Set visible cursor
+	CONSOLE_CURSOR_INFO cci;
+	cci.bVisible = true;
+	cci.dwSize = 10;
+	SetConsoleCursorInfo(handle, &cci);
+}

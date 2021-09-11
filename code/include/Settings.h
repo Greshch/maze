@@ -14,5 +14,5 @@ extern char const* Title;
 //////////////////////////////////////////////////////////////////////////////////////
 enum maze_objects { HALL, WALL, GOLD, VRAG };
 enum direction { DOWN = 80, UP = 72, LEFT = 75, RIGHT = 77 };
-enum colors { BLUE = 9, RED = 12, YELLOW = 14, DARKGREEN = 2 };
+enum colors { BLUE = 9, RED = 12, YELLOW = 14, DARKGREEN = 2, WHITE = 7 };
 //////////////////////////////////////////////////////////////////////////////////////

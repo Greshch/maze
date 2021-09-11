@@ -29,9 +29,6 @@ int main()
 	DrawMaze(h, (int*)maze, height, width);
 
 	COORD pers = { 0, 2 };
-	// SetConsoleCursorPosition(h, pers);
-	// SetConsoleTextAttribute(h, BLUE);
-	// cout << (char)1;
 	DrawObject(h, pers, BLUE, 1);
 
 	while (true)
@@ -40,6 +37,9 @@ int main()
 		if (direct == 224)
 			direct = _getch();
 
+		if (direct == 'q')
+			break;
+
 		SetConsoleCursorPosition(h, pers);
 		cout << " ";
 
@@ -47,11 +47,12 @@ int main()
 		{
 			pers.X++;
 		}
-		SetConsoleCursorPosition(h, pers);
-		SetConsoleTextAttribute(h, BLUE);
-		cout << (char)1;
+		
+		DrawObject(h, pers, BLUE, 1);
 	}
-}
+
+	CloseApp(h);
+ }
 
 ////////////////////////////////////////////////////////////////////
 // êàê îòïðàâèòü çíà÷åíèå èíòîâîé ïåðåìåííîé â çàãîëîâîê êîíñîëè: //
