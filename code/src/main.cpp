@@ -31,10 +31,12 @@ int main()
 	COORD pers = { 0, 2 };
 	int bytcoins = 0;
 	int health = 100;
+	int energy = 500;
 	DrawObject(h, pers, BLUE, 1);
 	DrawTotalCoins(h, {width + 2, 1});
 	DrawBitcoins(h, {width + 2, 3}, bytcoins);
 	DrawHealth(h, {width + 2, 5}, health);
+	DrawEnergy(h, {width + 2, 7}, energy);
 
 	while (true)
 	{
@@ -57,6 +59,10 @@ int main()
 		UpdateCoins((int*)maze, width, pers);
 		DrawBitcoins(h, {width + 2, 3}, bytcoins);
 
+		//4
+		UpdateCoffee(h, (int*) maze, width, pers, energy);
+		DrawEnergy(h, {width + 2, 7}, energy);
+
 		//3
 		UpdateEnemy(h, (int*) maze, width, pers, health);
 		UpdateMedicine(h, (int*) maze, width, pers, health);
@@ -78,6 +84,12 @@ int main()
 		if (health == 0)
 		{
 			MessageBoxW(NULL, L"Поражение закончилось здоровье...", L"Поражение", MB_OK);
+			break;
+		}
+		//4 check energy
+		if (energy == 0)
+		{
+			MessageBoxW(NULL, L"Поражение закончилась энергия...", L"Поражение", MB_OK);
 			break;
 		}
 
