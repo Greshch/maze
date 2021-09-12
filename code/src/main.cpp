@@ -29,7 +29,10 @@ int main()
 	DrawMaze(h, (int*)maze, height, width);
 
 	COORD pers = { 0, 2 };
+	int bytcoins = 0;
 	DrawObject(h, pers, BLUE, 1);
+	DrawTotalCoins(h, {width + 2, 1});
+	DrawBitcoins(h, {width + 2, 3}, bytcoins);
 
 	while (true)
 	{
@@ -41,20 +44,30 @@ int main()
 		if (direct == 'q')
 			break;
 
-		// SetConsoleCursorPosition(h, pers);
-		// cout << " ";
+		//1 move pers
 		ErasePersonsOldPosition(h, pers);
-
 		UpdatePerson((int*)maze, width, direct, pers);
-		
 		DrawObject(h, pers, BLUE, 1);
-		DrawPersonPosition(h, pers, {width + 2, 2});
+		///////////////////////////////////////////////////////
 
+		//2 count bytcoins
+		bytcoins = GetBytcoins((int*)maze, width, pers);
+		UpdateCoins((int*)maze, width, pers);
+		DrawBitcoins(h, {width + 2, 3}, bytcoins);
+
+		//1 check achieve EXIT
 		if (IsEqualCoord(pers, EXIT))
 		{
 			MessageBoxW(NULL, L"Победа найден выход!", L"Победа", MB_OK);
 			break;
 		}
+		//2 check collect of ALL GOLD
+		if (bytcoins == totalCoins)
+		{
+			MessageBoxW(NULL, L"Победа все биткоины собраны!", L"Победа", MB_OK);
+			break;
+		}
+
 	}
 
 	CloseApp(h);

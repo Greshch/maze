@@ -29,6 +29,10 @@ void GenerateMazeRandomly(int maze[], const int rows, const int cols)
 					maze[y * cols + x] = HALL;
 				}
 			}
+			if (maze[y * cols + x] == GOLD)
+			{
+				++totalCoins;
+			}
 		}
 	}
 }
@@ -83,6 +87,8 @@ void CloseApp(HANDLE& handle)
 	SetConsoleCursorInfo(handle, &cci);
 }
 
+///////////////////////////////////////////////////////////////////////////////////////
+
 void UpdatePerson(int arr[], int const& col, int direct, COORD& pers)
 {
 	if (direct == RIGHT && arr[pers.Y * col + pers.X + 1] != WALL)
@@ -119,4 +125,34 @@ void DrawPersonPosition(HANDLE& handle, COORD const& person, COORD const& pos)
 bool IsEqualCoord(COORD const& a, COORD const& b)
 {
 	return a.X == b.X && a.Y == b.Y;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+int GetBytcoins(int maze[],int col, COORD const& pers)
+{
+	static int bytcoins = 0;
+	if (maze[pers.Y * col + pers.X] == GOLD)
+		++bytcoins;
+	return bytcoins;
+}
+
+void DrawBitcoins(HANDLE& handle, COORD const& pos, int bytcoins)
+{
+	SetConsoleCursorPosition(handle, pos);
+	SetConsoleTextAttribute(handle, YELLOW);
+	printf("COINS: %d", bytcoins);
+}
+
+void UpdateCoins(int maze[], int col, COORD const& pers)
+{
+	if (maze[pers.Y * col + pers.X] == GOLD)
+		maze[pers.Y * col + pers.X] = HALL;
+}
+
+void DrawTotalCoins(HANDLE& h, COORD const& pos)
+{
+	SetConsoleCursorPosition(h, pos);
+	SetConsoleTextAttribute(h, DARKGREEN);
+	printf("TOTAL COINS: %d", totalCoins);
 }
