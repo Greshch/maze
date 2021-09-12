@@ -26,4 +26,10 @@ bool IsCollisionMedicine(HANDLE& h, int maze[], int col, COORD const& pers);
 void RecoverPerson(int& health);
 void UpdateMedicine(HANDLE& h, int maze[], int width, COORD const& pers, int& health);
 
+bool IsCollisionCoffee(HANDLE& h, int maze[], int col, COORD const& pers);
+void MealPerson(int& energy);
+void SpendEnergy(int& energy);
+void UpdateCoffee(HANDLE& h, int maze[], int width, COORD const& pers, int& health);
+void DrawEnergy(HANDLE& h, COORD const& pos, int energy);
+
 void CloseApp(HANDLE& handle);

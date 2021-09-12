@@ -13,7 +13,7 @@ void GenerateMazeRandomly(int maze[], const int rows, const int cols)
 	{
 		for (int x = 0; x < cols; x++)
 		{
-			maze[y * cols + x] = rand() % 5;
+			maze[y * cols + x] = rand() % 6;
 			if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
 				maze[y * cols + x] = WALL;
 
@@ -29,7 +29,7 @@ void GenerateMazeRandomly(int maze[], const int rows, const int cols)
 					maze[y * cols + x] = HALL;
 				}
 			}
-			if (maze[y * cols + x] == MEDICINE)
+			else if (maze[y * cols + x] == MEDICINE)
 			{
 				int r = rand() % 100; // 0...9
 				if (r == 91 )
@@ -41,7 +41,19 @@ void GenerateMazeRandomly(int maze[], const int rows, const int cols)
 					maze[y * cols + x] = HALL;
 				}
 			}
-			if (maze[y * cols + x] == GOLD)
+			else if (maze[y * cols + x] == COFFEE)
+			{
+				int r = rand() % 100; // 0...9
+				if (r  > 95 )
+				{
+					maze[y * cols + x] = COFFEE;
+				}
+				else
+				{
+					maze[y * cols + x] = HALL;
+				}
+			}
+			else if (maze[y * cols + x] == GOLD)
 			{
 				++totalCoins;
 			}
@@ -75,6 +87,11 @@ void DrawMaze(HANDLE& h, int maze[], const int rows, const int cols)
 			{
 				SetConsoleTextAttribute(h, WHITE);
 				cout << '+';
+			}
+			else if (maze[y * cols + x] == COFFEE)
+			{
+				SetConsoleTextAttribute(h, BROWN);
+				cout << 'U';
 			}
 			else
 			{
@@ -243,3 +260,60 @@ void UpdateMedicine(HANDLE& h, int maze[], int col, COORD const& pers, int& heal
 }
 
 /////////////////////////////////////////////////////////////////////////
+
+bool IsCollisionCoffee(HANDLE& h, int maze[], int col, COORD const& pers)
+{
+	return maze[pers.Y * col + pers.X] == COFFEE;
+}
+
+void SpendEnergy(int& energy)
+{
+	--energy;
+}
+
+void MealPerson(int& energy)
+{
+	energy += 25;
+}
+
+void UpdateCoffee(HANDLE& h, int maze[], int col, COORD const& pers, int& energy)
+{
+	static int timesMedicine = 10;
+	static COORD coffee {};
+	static bool flag = false;
+	if (IsCollisionMedicine(h, maze, col, pers) )
+	{
+		timesMedicine = 0;
+	}
+	else
+	{
+		++timesMedicine;
+	}
+	SpendEnergy(energy);
+	if (IsCollisionCoffee(h, maze, col, pers))
+	{
+		if (timesMedicine >= 10)
+		{
+			MealPerson(energy);
+			maze[pers.Y * col + pers.X] = HALL;
+		}
+		else
+		{
+			coffee.X = pers.X;
+			coffee.Y = pers.Y;
+			flag = true;
+		}
+	}
+	else if (flag)
+	{
+		DrawObject(h, coffee, BROWN, 'U');
+		flag = false;
+	}
+}
+
+void DrawEnergy(HANDLE& handle, COORD const& pos, int energy)
+{
+	SetConsoleCursorPosition(handle, pos);
+	SetConsoleTextAttribute(handle, YELLOW);
+	printf("ENERGY: %d  ", energy);
+}
