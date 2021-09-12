@@ -30,9 +30,11 @@ int main()
 
 	COORD pers = { 0, 2 };
 	int bytcoins = 0;
+	int health = 100;
 	DrawObject(h, pers, BLUE, 1);
 	DrawTotalCoins(h, {width + 2, 1});
 	DrawBitcoins(h, {width + 2, 3}, bytcoins);
+	DrawHealth(h, {width + 2, 5}, health);
 
 	while (true)
 	{
@@ -55,6 +57,11 @@ int main()
 		UpdateCoins((int*)maze, width, pers);
 		DrawBitcoins(h, {width + 2, 3}, bytcoins);
 
+		//3
+		UpdateEnemy(h, (int*) maze, width, pers, health);
+		UpdateMedicine(h, (int*) maze, width, pers, health);
+		DrawHealth(h, {width + 2, 5}, health);
+
 		//1 check achieve EXIT
 		if (IsEqualCoord(pers, EXIT))
 		{
@@ -65,6 +72,12 @@ int main()
 		if (bytcoins == totalCoins)
 		{
 			MessageBoxW(NULL, L"Победа все биткоины собраны!", L"Победа", MB_OK);
+			break;
+		}
+		//3 check health
+		if (health == 0)
+		{
+			MessageBoxW(NULL, L"Поражение закончилось здоровье...", L"Поражение", MB_OK);
 			break;
 		}
 

@@ -15,7 +15,15 @@ void DrawPersonPosition(HANDLE& handle, COORD const& person, COORD const& pos);
 void UpdateCoins(int maze[], int width, COORD const& pers);
 int GetBytcoins(int maze[],int width, COORD const& pers);
 void DrawBitcoins(HANDLE& h, COORD const& pos, int bytcoins);
-
 void DrawTotalCoins(HANDLE& h, COORD const& pos);
+
+bool IsCollisionEnemy(HANDLE& h, int maze[], int col, COORD const& pers);
+void HurtPerson(int& health);
+void DrawHealth(HANDLE& h, COORD const& pos, int health);
+void UpdateEnemy(HANDLE& h, int maze[], int width, COORD const& pers, int& health);
+
+bool IsCollisionMedicine(HANDLE& h, int maze[], int col, COORD const& pers);
+void RecoverPerson(int& health);
+void UpdateMedicine(HANDLE& h, int maze[], int width, COORD const& pers, int& health);
 
 void CloseApp(HANDLE& handle);

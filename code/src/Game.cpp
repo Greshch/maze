@@ -13,7 +13,7 @@ void GenerateMazeRandomly(int maze[], const int rows, const int cols)
 	{
 		for (int x = 0; x < cols; x++)
 		{
-			maze[y * cols + x] = rand() % 4;
+			maze[y * cols + x] = rand() % 5;
 			if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
 				maze[y * cols + x] = WALL;
 
@@ -25,6 +25,18 @@ void GenerateMazeRandomly(int maze[], const int rows, const int cols)
 			{
 				int r = rand() % 100; // 0...9
 				if (r)
+				{
+					maze[y * cols + x] = HALL;
+				}
+			}
+			if (maze[y * cols + x] == MEDICINE)
+			{
+				int r = rand() % 100; // 0...9
+				if (r == 91 )
+				{
+					maze[y * cols + x] = MEDICINE;
+				}
+				else
 				{
 					maze[y * cols + x] = HALL;
 				}
@@ -58,6 +70,11 @@ void DrawMaze(HANDLE& h, int maze[], const int rows, const int cols)
 			{
 				SetConsoleTextAttribute(h, RED);
 				cout << (char)1;
+			}
+			else if (maze[y * cols + x] == MEDICINE)
+			{
+				SetConsoleTextAttribute(h, WHITE);
+				cout << '+';
 			}
 			else
 			{
@@ -156,3 +173,73 @@ void DrawTotalCoins(HANDLE& h, COORD const& pos)
 	SetConsoleTextAttribute(h, DARKGREEN);
 	printf("TOTAL COINS: %d", totalCoins);
 }
+
+//////////////////////////////////////////////////////////////////////////////
+
+bool IsCollisionEnemy(HANDLE& h, int maze[], int col, COORD const& pers)
+{
+	return maze[pers.Y * col + pers.X] == VRAG;
+}
+
+void DrawHealth(HANDLE& handle, COORD const& pos, int health)
+{
+	SetConsoleCursorPosition(handle, pos);
+	SetConsoleTextAttribute(handle, DARKGREEN);
+	printf("HEALTH: %d  ", health);
+}
+
+void HurtPerson(int& health)
+{
+	int ran = rand() % 2;
+	health -= (ran) ? 20 : 25;
+	health = (health < 0) ? 0 : health;
+}
+
+void UpdateEnemy(HANDLE& h, int maze[], int col, COORD const& pers, int& health)
+{
+	if (IsCollisionEnemy(h, maze, col, pers))
+	{
+		maze[pers.Y * col + pers.X] = HALL;
+		HurtPerson(health);
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+bool IsCollisionMedicine(HANDLE& h, int maze[], int col, COORD const& pers)
+{
+	return maze[pers.Y * col + pers.X] == MEDICINE;
+}
+
+void RecoverPerson(int& health)
+{
+	health += 5;
+} 
+
+void UpdateMedicine(HANDLE& h, int maze[], int col, COORD const& pers, int& health)
+{
+	static bool VisitMedicineWithFullHealth = false;
+	static COORD medicine {};
+	if (IsCollisionMedicine(h, maze, col, pers))
+	{
+		if (health < 100)
+		{
+			maze[pers.Y * col + pers.X] = HALL;
+			RecoverPerson(health);
+		}
+		else
+		{
+			maze[pers.Y * col + pers.X] = MEDICINE;
+			VisitMedicineWithFullHealth = true;
+			medicine.X = pers.X;
+			medicine.Y = pers.Y;
+		}
+	}
+	else if (VisitMedicineWithFullHealth)
+	{
+		DrawObject(h, medicine, WHITE, '+');
+		VisitMedicineWithFullHealth = false;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////
